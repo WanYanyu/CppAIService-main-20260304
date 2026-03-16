@@ -1,0 +1,19 @@
+sudo tee /etc/systemd/system/tutor-agent.service > /dev/null << 'EOF'
+[Unit]
+Description=Socratic Tutor Agent (Port 8001)
+After=network.target sandbox-agent.service
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/CppAIService-main-20260304/Agent/TurorAgent
+EnvironmentFile=/home/ubuntu/CppAIService-main-20260304/Agent/.env
+ExecStart=/usr/bin/uvicorn main:app --host 0.0.0.0 --port 8001
+Restart=on-failure
+RestartSec=5s
+StandardOutput=append:/home/ubuntu/CppAIService-main-20260304/Agent/TurorAgent/tutor.log
+StandardError=append:/home/ubuntu/CppAIService-main-20260304/Agent/TurorAgent/tutor.log
+
+[Install]
+WantedBy=multi-user.target
+EOF

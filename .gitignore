@@ -1,0 +1,175 @@
+# ===========================================
+# 编译输出目录 (C++ build)
+# ===========================================
+build/
+cmake-build-*/
+out/
+Debug/
+Release/
+x64/
+x86/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+*.dylib
+
+# ===========================================
+# Python 相关 (Agent目录)
+# ===========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Python字节码缓存
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# PyInstaller
+*.manifest
+*.spec.backup
+
+# 虚拟环境
+venv/
+ENV/
+env/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ===========================================
+# IDE 和编辑器
+# ===========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Visual Studio
+.vs/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.user
+*.userosscache
+*.sln.docstates
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+tmp/
+
+# ===========================================
+# 日志和临时文件
+# ===========================================
+*.log
+logs/
+*.tmp
+*.temp
+tmp/
+temp/
+
+# ===========================================
+# 数据库相关
+# ===========================================
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+
+# ===========================================
+# 会话数据 (如果是化存储)
+# ===========================================
+sessions/
+持久session_data/
+*.sess
+
+# ===========================================
+# 配置文件 (敏感信息)
+# ===========================================
+.env
+.env.local
+config.local.json
+*.local.json
+credentials.json
+secrets.json
+
+# ===========================================
+# 模型文件 (如果使用ML模型)
+# ===========================================
+*.onnx
+*.h5
+*.pb
+*.pkl
+*.model
+/models/
+checkpoints/
+
+# ===========================================
+# 压缩包和备份
+# ===========================================
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.bak
+*.backup
+*~
+
+# ===========================================
+# 上传的文件 (如果有用户上传功能)
+# ===========================================
+uploads/
+upload/
+user_files/
+media/
+
+# ===========================================
+# Docker 相关
+# ===========================================
+.docker/
+docker-compose.override.yml
+
+# ===========================================
+# CMake 相关
+# ===========================================
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+_deps/
+_build/
+
+# ==========================================
+# 服务器运行产生的文件
+# ==========================================
+pid/
+*.pid
+*.sock
+*.out
+nohup.out

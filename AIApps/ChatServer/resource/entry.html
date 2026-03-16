@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI刷题评测与学习计划系统</title>
+    <style>
+        /* 全局样式 - 参考图片风格 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* 主容器 - 大圆角卡片 */
+        .main-container {
+            display: flex;
+            width: 900px;
+            max-width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* 左侧插画区域 */
+        .illustration-section {
+            flex: 1;
+            background: #E8E8E8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+            min-height: 500px;
+        }
+
+        /* 几何插画元素 */
+        .illustration-section::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            background: #7C5CFF;
+            border-radius: 20px;
+            top: 60px;
+            left: 60px;
+            transform: rotate(-15deg);
+        }
+
+        .illustration-section::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #FFB347;
+            border-radius: 50%;
+            bottom: 80px;
+            right: 50px;
+        }
+
+        .geometric-circle {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #FFD93D;
+            border-radius: 50%;
+            top: 100px;
+            right: 100px;
+        }
+
+        .geometric-arc {
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            background: #FF6B6B;
+            border-radius: 40px 40px 0 0;
+            bottom: 120px;
+            left: 80px;
+        }
+
+        /* 卡通角色 */
+        .character {
+            position: relative;
+            z-index: 1;
+        }
+
+        .character-body {
+            width: 100px;
+            height: 140px;
+            background: #2D2D2D;
+            border-radius: 50px 50px 40px 40px;
+            position: relative;
+        }
+
+        .character-face {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: #FFE4C4;
+            border-radius: 50%;
+        }
+
+        .character-eyes {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+        }
+
+        .character-eye {
+            width: 10px;
+            height: 10px;
+            background: #2D2D2D;
+            border-radius: 50%;
+        }
+
+        .character-mouth {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+            border-radius: 0 0 20px 20px;
+            background: #FF6B6B;
+        }
+
+        .character-blush {
+            position: absolute;
+            top: 30px;
+            width: 12px;
+            height: 8px;
+            background: #FFB6C1;
+            border-radius: 50%;
+        }
+
+        .character-blush-left {
+            left: 5px;
+        }
+
+        .character-blush-right {
+            right: 5px;
+        }
+
+        /* 光标图标 */
+        .cursor-icon {
+            position: absolute;
+            top: 40px;
+            right: 80px;
+            width: 20px;
+            height: 24px;
+            background: #2D2D2D;
+            clip-path: polygon(0% 0%, 100% 50%, 60% 50%, 60% 100%, 0% 100%);
+        }
+
+        /* 右侧表单区域 */
+        .form-section {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: #2D2D2D;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2D2D2D;
+        }
+
+        /* 标题区域 */
+        .header-section {
+            margin-bottom: 32px;
+        }
+
+        .main-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2D2D2D;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 0;
+            font-size: 15px;
+            border: none;
+            border-bottom: 2px solid #E0E0E0;
+            background: transparent;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            border-bottom-color: #2D2D2D;
+        }
+
+        .form-input::placeholder {
+            color: #AAA;
+        }
+
+        /* 主按钮 - 黑色 */
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            background-color: #2D2D2D;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+        }
+
+        .btn-primary:hover {
+            background-color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 次要按钮 */
+        .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            background-color: #F5F5F5;
+            color: #555;
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #EEE;
+        }
+
+        .google-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* 分割线 */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: #E0E0E0;
+        }
+
+        .divider-text {
+            padding: 0 16px;
+            font-size: 12px;
+            color: #AAA;
+        }
+
+        /* 底部切换 */
+        .switch-section {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .switch-link {
+            color: #2D2D2D;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .switch-link:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        /* 成功提示框 */
+        #success-alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2D2D2D;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .illustration-section {
+                min-height: 200px;
+                padding: 30px;
+            }
+
+            .character-body {
+                width: 60px;
+                height: 80px;
+            }
+
+            .character-face {
+                width: 40px;
+                height: 40px;
+                top: 18px;
+            }
+
+            .character-eyes {
+                top: 12px;
+                gap: 8px;
+            }
+
+            .character-eye {
+                width: 6px;
+                height: 6px;
+            }
+
+            .character-mouth {
+                width: 14px;
+                height: 6px;
+                bottom: 10px;
+            }
+
+            .form-section {
+                padding: 30px 24px;
+            }
+
+            .main-title {
+                font-size: 24px;
+            }
+        }
+
+        /* 隐藏/显示容器 */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="success-alert">提示信息</div>
+
+    <div class="main-container">
+        <!-- 左侧插画区域 -->
+        <div class="illustration-section">
+            <div class="geometric-circle"></div>
+            <div class="geometric-arc"></div>
+
+            <!-- 卡通角色 -->
+            <div class="character">
+                <div class="character-body">
+                    <div class="character-face">
+                        <div class="character-eyes">
+                            <div class="character-eye"></div>
+                            <div class="character-eye"></div>
+                        </div>
+                        <div class="character-blush character-blush-left"></div>
+                        <div class="character-blush character-blush-right"></div>
+                        <div class="character-mouth"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cursor-icon"></div>
+        </div>
+
+        <!-- 右侧表单区域 -->
+        <div class="form-section">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <span class="logo-text">AI刷题评测与学习计划系统</span>
+            </div>
+
+            <!-- 登录表单 -->
+            <div id="login-container">
+                <div class="header-section">
+                    <h1 class="main-title">欢迎回来</h1>
+                    <p class="subtitle">请输入您的账号信息</p>
+                </div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label" for="login-username">用户名</label>
+                        <input type="text" id="login-username" class="form-input" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="login-password">密码</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn-primary">登录</button>
+                </form>
+
+                <div class="switch-section">
+                    没有账号？<a class="switch-link" onclick="showRegister()">去注册</a>
+                </div>
+            </div>
+
+            <!-- 注册表单 -->
+            <div id="register-container" class="hidden">
+                <div class="header-section">
+                    <h1 class="main-title">创建账号</h1>
+                    <p class="subtitle">开始使用AI刷题评测与学习计划系统</p>
+                </div>
+
+                <form id="register-form">
+                    <div class="form-group">
+                        <label class="form-label" for="register-username">用户名</label>
+                        <input type="text" id="register-username" class="form-input" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="register-password">密码</label>
+                        <input type="password" id="register-password" class="form-input" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn-primary">注册</button>
+                </form>
+
+                <div class="switch-section">
+                    已有账号？<a class="switch-link" onclick="showLogin()">返回登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAlert(message) {
+            const alertBox = document.getElementById('success-alert');
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 1000);
+        }
+
+        function showRegister() {
+            document.getElementById('login-container').classList.add('hidden');
+            document.getElementById('register-container').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('register-container').classList.add('hidden');
+            document.getElementById('login-container').classList.remove('hidden');
+        }
+
+        // 登录
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            }).then(response => {
+                if (response.status === 403) { showAlert('账号已在其他地方登录！'); throw new Error('已在其他地方登录'); }
+                const contentType = response.headers.get('content-type');
+                if (response.status === 200) {
+                    if (contentType && contentType.includes('application/json')) return response.json();
+                    else throw new Error('返回格式错误');
+                } else if (response.status === 401) { showAlert('账号或密码错误！'); throw new Error('认证失败'); }
+                else throw new Error('请求失败');
+            }).then(data => {
+                if (data && data.userId) { sessionStorage.clear(); sessionStorage.setItem('userId', data.userId); showAlert('登录成功！'); window.location.href = '/menu'; }
+                else throw new Error('无效的响应数据');
+            }).catch(error => {
+                console.error('Error:', error);
+                if (!error.message.includes('已在其他地方登录') && !error.message.includes('认证失败')) showAlert('操作失败，请重试');
+            });
+        });
+
+        // 注册
+        document.getElementById('register-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+
+            fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            }).then(response => {
+                if (response.status === 200) {
+                    showAlert('注册成功！');
+                    document.getElementById('login-username').value = username;
+                    document.getElementById('login-password').value = password;
+                    setTimeout(showLogin, 1000);
+                } else if (response.status === 409) { alert('用户名已被注册，请重新输入！'); }
+            }).catch(error => console.error('注册错误:', error));
+        });
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .inland-security-footer {
+            position: fixed;
+            z-index: 10;
+            bottom: 0;
+            right: 0;
+            width: fit-content;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .tooltip-container {
+            position: relative;
+        }
+
+        .trigger-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background-color: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .minimax-link {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 300;
+            color: #adadad;
+            text-decoration: none;
+        }
+
+        .minimax-link:visited {
+            color: #adadad;
+        }
+
+        .minimax-link:hover {
+            color: #666666;
+        }
+
+        .tooltip-content {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            padding-bottom: 16px;
+            /* 8px 内容间距 + 8px 用于鼠标移动的透明区域 */
+            font-size: 12px;
+            line-height: 17px;
+            background-color: #fafafa;
+            border-radius: 12px;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            color: #171717;
+        }
+
+        /* 创建透明的连接区域，让鼠标可以平滑移动到 tooltip */
+        .tooltip-content::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 16px;
+        }
+
+        .tooltip-container:hover .tooltip-content {
+            display: flex;
+        }
+
+        .info-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .beian-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #171717;
+        }
+
+        .beian-icon {
+            width: 14px;
+            height: 14px;
+            margin-right: 2px;
+        }
+
+        .underline-text {
+            color: #171717;
+            text-decoration: underline;
+        }
+
+        .underline-text:hover {
+            color: #000000;
+        }
+
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            .trigger-content {
+                background-color: transparent;
+            }
+
+            .minimax-link,
+            .minimax-link:visited {
+                color: #666666;
+            }
+
+            .minimax-link:hover {
+                color: #adadad;
+            }
+
+            .tooltip-content {
+                background-color: #262626;
+                color: #ededed;
+            }
+
+            .beian-link,
+            .underline-text {
+                color: #ededed;
+            }
+
+            .underline-text:hover {
+                color: #ffffff;
+            }
+        }
+    </style>
+    <div class="inland-security-footer">
+        <div class="tooltip-container">
+            <div class="trigger-content">
+                <a href="https://www.minimaxi.com/" target="_blank" rel="noreferrer" class="minimax-link">
+                    <span></span>
+                </a>
+            </div>
+            <div class="tooltip-content">
+                <section class="info-section">
+                    <span></span>
+                </section>
+
+                <section class="info-section">
+                    <a class="beian-link"
+                        href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010402010179"
+                        target="_blank" rel="noreferrer">
+                        <img alt="hailuo-beian-icon"
+                            src="https://cdn.hailuoai.com/hailuo-video-web/public_assets/223037d3-79fd-4db0-a456-749f38a6a14b.png"
+                            class="beian-icon">
+                        <span class="underline-text"></span>
+                    </a>
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer" class="underline-text">
+
+                    </a>
+                </section>
+
+                <section class="info-section">
+                    <span></span>
+                    <span></span>
+                </section>
+
+                <section class="info-section">
+                    <a href="https://agent.minimaxi.com/doc/zh/terms-of-service.html" target="_blank" rel="noreferrer"
+                        class="underline-text">
+                        用户协议
+                    </a>
+                    <a href="https://agent.minimaxi.com/doc/zh/privacy-policy.html" target="_blank" rel="noreferrer"
+                        class="underline-text">
+                        隐私政策
+                    </a>
+                </section>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

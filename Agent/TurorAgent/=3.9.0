@@ -1,0 +1,28 @@
+Defaulting to user installation because normal site-packages is not writeable
+Looking in indexes: http://mirrors.tencentyun.com/pypi/simple
+Collecting aiohttp
+  Downloading http://mirrors.tencentyun.com/pypi/packages/2c/c0/cfcc3d2e11b477f86e1af2863f3858c8850d751ce8dc39c4058a072c9e54/aiohttp-3.13.3-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 17.0 MB/s eta 0:00:00
+Collecting yarl<2.0,>=1.17.0
+  Downloading http://mirrors.tencentyun.com/pypi/packages/50/12/95a1d33f04a79c402664070d43b8b9f72dc18914e135b345b611b0b1f8cc/yarl-1.23.0-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (102 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 102.8/102.8 KB 733.3 kB/s eta 0:00:00
+Collecting async-timeout<6.0,>=4.0
+  Downloading http://mirrors.tencentyun.com/pypi/packages/fe/ba/e2081de779ca30d473f21f5b30e0e737c438205440784c7dfc81efc2b029/async_timeout-5.0.1-py3-none-any.whl (6.2 kB)
+Collecting multidict<7.0,>=4.5
+  Downloading http://mirrors.tencentyun.com/pypi/packages/4b/ac/b605473de2bb404e742f2cc3583d12aedb2352a70e49ae8fce455b50c5aa/multidict-6.7.1-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (243 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 243.3/243.3 KB 7.6 MB/s eta 0:00:00
+Collecting aiohappyeyeballs>=2.5.0
+  Downloading http://mirrors.tencentyun.com/pypi/packages/0f/15/5bf3b99495fb160b63f95972b81750f18f7f4e02ad051373b669d17d44f2/aiohappyeyeballs-2.6.1-py3-none-any.whl (15 kB)
+Collecting frozenlist>=1.1.1
+  Downloading http://mirrors.tencentyun.com/pypi/packages/5d/ed/c7895fd2fde7f3ee70d248175f9b6cdf792fb741ab92dc59cd9ef3bd241b/frozenlist-1.8.0-cp310-cp310-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (219 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 219.5/219.5 KB 3.7 MB/s eta 0:00:00
+Collecting aiosignal>=1.4.0
+  Downloading http://mirrors.tencentyun.com/pypi/packages/fb/76/641ae371508676492379f16e2fa48f4e2c11741bd63c48be4b12a6b09cba/aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+Requirement already satisfied: attrs>=17.3.0 in /usr/lib/python3/dist-packages (from aiohttp) (21.2.0)
+Collecting propcache>=0.2.0
+  Downloading http://mirrors.tencentyun.com/pypi/packages/08/57/8c87e93142b2c1fa2408e45695205a7ba05fb5db458c0bf5c06ba0e09ea6/propcache-0.4.1-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (196 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 196.9/196.9 KB 5.2 MB/s eta 0:00:00
+Requirement already satisfied: typing-extensions>=4.2 in /home/ubuntu/.local/lib/python3.10/site-packages (from aiosignal>=1.4.0->aiohttp) (4.15.0)
+Requirement already satisfied: idna>=2.0 in /usr/lib/python3/dist-packages (from yarl<2.0,>=1.17.0->aiohttp) (3.3)
+Installing collected packages: propcache, multidict, frozenlist, async-timeout, aiohappyeyeballs, yarl, aiosignal, aiohttp
+Successfully installed aiohappyeyeballs-2.6.1 aiohttp-3.13.3 aiosignal-1.4.0 async-timeout-5.0.1 frozenlist-1.8.0 multidict-6.7.1 propcache-0.4.1 yarl-1.23.0

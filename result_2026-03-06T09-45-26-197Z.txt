@@ -1,0 +1,15 @@
+
+k6 test summary
+================
+http_req_failed: 0
+http_reqs: 300
+avg_duration: 0.6989434000000004 ms
+min_duration: 0.371094 ms
+med_duration: 0.6147355 ms
+max_duration: 3.674325 ms
+p90_duration: 0.8144028000000001 ms
+p95_duration: 1.1193687500000007 ms
+iterations: 300
+vus_max: 10
+checks_passed: 300
+checks_failed: 0

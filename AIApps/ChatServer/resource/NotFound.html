@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found</title>
+    <style>
+        /* 全局样式 - 统一设计风格 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* 主容器 */
+        .main-container {
+            display: flex;
+            width: 900px;
+            max-width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* 左侧插画区域 */
+        .illustration-section {
+            flex: 1;
+            background: #E8E8E8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+            min-height: 400px;
+        }
+
+        /* 几何装饰 */
+        .geo-shape-1 {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #FF6B6B;
+            border-radius: 20px;
+            top: 50px;
+            left: 50px;
+            transform: rotate(-15deg);
+        }
+
+        .geo-shape-2 {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #7C5CFF;
+            border-radius: 50%;
+            bottom: 80px;
+            right: 60px;
+        }
+
+        .geo-shape-3 {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #FFD93D;
+            border-radius: 50%;
+            top: 100px;
+            right: 100px;
+        }
+
+        .geo-shape-4 {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            background: #FFB347;
+            border-radius: 30px 30px 0 0;
+            bottom: 100px;
+            left: 80px;
+        }
+
+        /* 404 文字 */
+        .error-code {
+            font-size: 80px;
+            font-weight: 800;
+            color: #2D2D2D;
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-code span {
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .error-code span:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .error-code span:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* 右侧内容区域 */
+        .content-section {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: #2D2D2D;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2D2D2D;
+        }
+
+        /* 标题 */
+        .main-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2D2D2D;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #888;
+            margin-bottom: 32px;
+        }
+
+        /* 按钮 */
+        .btn-primary {
+            display: inline-block;
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            background-color: #2D2D2D;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .illustration-section {
+                min-height: 200px;
+            }
+
+            .error-code {
+                font-size: 48px;
+            }
+
+            .content-section {
+                padding: 30px 24px;
+            }
+
+            .main-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- 左侧插画区域 -->
+        <div class="illustration-section">
+            <div class="geo-shape-1"></div>
+            <div class="geo-shape-2"></div>
+            <div class="geo-shape-3"></div>
+            <div class="geo-shape-4"></div>
+            <div class="error-code">
+                <span>4</span>
+                <span>0</span>
+                <span>4</span>
+            </div>
+        </div>
+
+        <!-- 右侧内容区域 -->
+        <div class="content-section">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <span class="logo-text">AI刷题评测与学习计划系统</span>
+            </div>
+
+            <h1 class="main-title">页面不存在</h1>
+            <p class="subtitle">抱歉，您访问的页面不存在或已被移除</p>
+            <a href="/menu" class="btn-primary">返回首页</a>
+        </div>
+    </div>
+</body>
+
+</html>

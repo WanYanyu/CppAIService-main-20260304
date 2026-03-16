@@ -1,0 +1,10 @@
+pkill -f http_server && pkill -f main.py && pkill -f sandbox_api.py
+sudo systemctl daemon-reload
+sudo systemctl start cpp-httpserver tutor-agent sandbox-agent
+sudo systemctl status cpp-httpserver tutor-agent sandbox-agent
+
+
+export $(grep -v '^#' Agent/.env | grep -v '^$' | xargs)
+cd Agent/SandBoxAgent && uvicorn sandbox_api:app --host 0.0.0.0 --port 8002
+cd Agent/TurorAgent && uvicorn main:app --host 0.0.0.0 --port 8001
+cd build && ./http_server -p 8000

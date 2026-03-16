@@ -1,0 +1,21 @@
+sudo tee /etc/systemd/system/cpp-httpserver.service > /dev/null << 'EOF'
+[Unit]
+Description=C++ AI Http Server (Port 8000)
+After=network.target mysql.service rabbitmq-server.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/CppAIService-main-20260304
+# 从 .env 加载环境变量（API Keys）
+EnvironmentFile=/home/ubuntu/CppAIService-main-20260304/Agent/.env
+ExecStart=/home/ubuntu/CppAIService-main-20260304/build/http_server -p 8000
+Restart=on-failure
+RestartSec=5s
+StandardOutput=append:/home/ubuntu/CppAIService-main-20260304/build/httpserver.log
+StandardError=append:/home/ubuntu/CppAIService-main-20260304/build/httpserver.log
+
+[Install]
+WantedBy=multi-user.target
+EOF

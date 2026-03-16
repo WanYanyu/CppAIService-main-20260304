@@ -1,0 +1,19 @@
+sudo tee /etc/systemd/system/sandbox-agent.service > /dev/null << 'EOF'
+[Unit]
+Description=Sandbox Code Evaluation Agent (Port 8002)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/CppAIService-main-20260304/Agent/SandBoxAgent
+EnvironmentFile=/home/ubuntu/CppAIService-main-20260304/Agent/.env
+ExecStart=/usr/bin/uvicorn sandbox_api:app --host 0.0.0.0 --port 8002
+Restart=on-failure
+RestartSec=5s
+StandardOutput=append:/home/ubuntu/CppAIService-main-20260304/Agent/SandBoxAgent/sandbox.log
+StandardError=append:/home/ubuntu/CppAIService-main-20260304/Agent/SandBoxAgent/sandbox.log
+
+[Install]
+WantedBy=multi-user.target
+EOF
