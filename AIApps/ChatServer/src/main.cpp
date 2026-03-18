@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 	LOG_INFO << "pid = " << getpid();
 	std::string serverName = "ChatServer";
 	int port = 80;
-    // 
+    //
     int opt;
     const char* str = "p:";
     while ((opt = getopt(argc, argv, str)) != -1)
@@ -41,10 +41,10 @@ int main(int argc, char* argv[]) {
     muduo::Logger::setLogLevel(muduo::Logger::INFO);
     ChatServer server(port, serverName);
     server.setThreadNum(4);
-    
+
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    
-    server.initChatMessage();    
+
+    server.initChatMessage();
 
 
     RabbitMQThreadPool pool(RABBITMQ_HOST, QUEUE_NAME, THREAD_NUM, executeMysql);

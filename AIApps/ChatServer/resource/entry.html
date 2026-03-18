@@ -37,7 +37,9 @@
         /* 左侧插画区域 */
         .illustration-section {
             flex: 1;
-            background: #E8E8E8;
+            background: linear-gradient(135deg, #E8E8E8 0%, #f0f0f0 50%, #E8E8E8 100%);
+            background-size: 200% 200%;
+            animation: bg-gradient 8s ease infinite;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -45,9 +47,86 @@
             padding: 40px;
             position: relative;
             min-height: 500px;
+            overflow: hidden;
         }
 
-        /* 几何插画元素 */
+        @keyframes bg-gradient {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* 背景粒子 */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(124, 92, 255, 0.3);
+            border-radius: 50%;
+            animation: particle-float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            top: 15%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            top: 25%;
+            right: 25%;
+            animation-delay: 1s;
+            background: rgba(255, 179, 71, 0.3);
+        }
+
+        .particle:nth-child(3) {
+            top: 45%;
+            left: 15%;
+            animation-delay: 2s;
+            background: rgba(255, 217, 61, 0.3);
+        }
+
+        .particle:nth-child(4) {
+            bottom: 35%;
+            right: 20%;
+            animation-delay: 3s;
+            background: rgba(255, 107, 107, 0.3);
+        }
+
+        .particle:nth-child(5) {
+            top: 60%;
+            left: 25%;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(6) {
+            bottom: 20%;
+            left: 40%;
+            animation-delay: 5s;
+            background: rgba(255, 179, 71, 0.3);
+        }
+
+        @keyframes particle-float {
+
+            0%,
+            100% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translateY(-20px) scale(1.5);
+                opacity: 0.6;
+            }
+        }
+
+        /* 几何插画元素 - 动画 */
         .illustration-section::before {
             content: '';
             position: absolute;
@@ -58,6 +137,7 @@
             top: 60px;
             left: 60px;
             transform: rotate(-15deg);
+            animation: float-block-1 4s ease-in-out infinite;
         }
 
         .illustration-section::after {
@@ -69,6 +149,7 @@
             border-radius: 50%;
             bottom: 80px;
             right: 50px;
+            animation: pulse-circle 3s ease-in-out infinite;
         }
 
         .geometric-circle {
@@ -79,6 +160,7 @@
             border-radius: 50%;
             top: 100px;
             right: 100px;
+            animation: bounce-dot 2.5s ease-in-out infinite;
         }
 
         .geometric-arc {
@@ -89,12 +171,81 @@
             border-radius: 40px 40px 0 0;
             bottom: 120px;
             left: 80px;
+            animation: wave-arc 3.5s ease-in-out infinite;
+        }
+
+        /* 动画关键帧 */
+        @keyframes float-block-1 {
+
+            0%,
+            100% {
+                transform: rotate(-15deg) translateY(0px);
+            }
+
+            50% {
+                transform: rotate(-10deg) translateY(-15px);
+            }
+        }
+
+        @keyframes pulse-circle {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes bounce-dot {
+
+            0%,
+            100% {
+                transform: translateY(0px) scale(1);
+            }
+
+            25% {
+                transform: translateY(-8px) scale(1.1);
+            }
+
+            50% {
+                transform: translateY(0px) scale(1);
+            }
+
+            75% {
+                transform: translateY(8px) scale(0.95);
+            }
+        }
+
+        @keyframes wave-arc {
+
+            0%,
+            100% {
+                transform: scaleX(1) rotate(0deg);
+            }
+
+            25% {
+                transform: scaleX(1.1) rotate(3deg);
+            }
+
+            50% {
+                transform: scaleX(1) rotate(0deg);
+            }
+
+            75% {
+                transform: scaleX(0.95) rotate(-3deg);
+            }
         }
 
         /* 卡通角色 */
         .character {
             position: relative;
             z-index: 1;
+            animation: character-float 3s ease-in-out infinite;
         }
 
         .character-body {
@@ -103,6 +254,7 @@
             background: #2D2D2D;
             border-radius: 50px 50px 40px 40px;
             position: relative;
+            animation: character-breathe 3s ease-in-out infinite;
         }
 
         .character-face {
@@ -130,6 +282,11 @@
             height: 10px;
             background: #2D2D2D;
             border-radius: 50%;
+            animation: blink 4s ease-in-out infinite;
+        }
+
+        .character-eye:nth-child(2) {
+            animation-delay: 0.1s;
         }
 
         .character-mouth {
@@ -141,6 +298,7 @@
             height: 10px;
             border-radius: 0 0 20px 20px;
             background: #FF6B6B;
+            animation: mouth-talk 3s ease-in-out infinite;
         }
 
         .character-blush {
@@ -150,6 +308,7 @@
             height: 8px;
             background: #FFB6C1;
             border-radius: 50%;
+            animation: blush-pulse 2s ease-in-out infinite;
         }
 
         .character-blush-left {
@@ -158,17 +317,73 @@
 
         .character-blush-right {
             right: 5px;
+            animation-delay: 0.5s;
         }
 
-        /* 光标图标 */
-        .cursor-icon {
-            position: absolute;
-            top: 40px;
-            right: 80px;
-            width: 20px;
-            height: 24px;
-            background: #2D2D2D;
-            clip-path: polygon(0% 0%, 100% 50%, 60% 50%, 60% 100%, 0% 100%);
+        /* 角色动画 */
+        @keyframes character-float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes character-breathe {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes blink {
+
+            0%,
+            45%,
+            55%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            50% {
+                transform: scaleY(0.1);
+            }
+        }
+
+        @keyframes mouth-talk {
+
+            0%,
+            100% {
+                height: 10px;
+                border-radius: 0 0 20px 20px;
+            }
+
+            30%,
+            70% {
+                height: 12px;
+                border-radius: 0 0 15px 15px;
+            }
+        }
+
+        @keyframes blush-pulse {
+
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         /* 右侧表单区域 */
@@ -417,6 +632,14 @@
     <div class="main-container">
         <!-- 左侧插画区域 -->
         <div class="illustration-section">
+            <!-- 背景粒子 -->
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+
             <div class="geometric-circle"></div>
             <div class="geometric-arc"></div>
 
@@ -434,8 +657,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="cursor-icon"></div>
         </div>
 
         <!-- 右侧表单区域 -->
