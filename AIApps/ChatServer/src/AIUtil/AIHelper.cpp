@@ -2,6 +2,9 @@
 #include "../include/AIUtil/MQManager.h"
 #include <stdexcept>
 #include <chrono>
+#include <atomic>
+#include <vector>
+
 
 // 构造函数
 AIHelper::AIHelper()
@@ -37,6 +40,15 @@ void AIHelper::restoreMessage(const std::string &userInput, long long ms)
 }
 
 // 发送聊天消息
+
+// 在文件外定义全局模型轮询池以及计数器
+static std::atomic<int> s_model_index{0};
+static const std::vector<std::string> s_fallbackPool = {
+    "qwen",
+    "doubao",
+    "deepseek"
+};
+
 std::string AIHelper::chat(int userId, std::string userName, std::string sessionId, std::string userQuestion, std::string modelType)
 {
 
@@ -46,21 +58,18 @@ std::string AIHelper::chat(int userId, std::string userName, std::string session
         std::cout << "[AIHelper] Warning: config.json not found or invalid, using env vars only." << std::endl;
     }
 
-    // Use default model if not specified or empty
-    if (modelType.empty())
+    // 【新版逻辑：当用户未指定时，触发多模型并发轮询调度】
+    // 拦截原本一直走 deepseek-chat 或 env 的单一逻辑
+    if (modelType.empty() || modelType == "auto")
     {
-        // ✅ NEW: First try env var DEFAULT_MODEL, then config.json default
-        const char *envModel = std::getenv("DEFAULT_MODEL");
-        if (envModel && *envModel)
-        {
-            modelType = std::string(envModel);
-        }
-        else
-        {
-            modelType = config.getDefaultModel();
-        }
-        if (modelType.empty())
-            modelType = "deepseek-chat"; // final fallback
+        // 利用原子操作获取当前计数，并安全地模以池子的大小
+        int currentIndex = s_model_index.fetch_add(1, std::memory_order_relaxed) % s_fallbackPool.size();
+        
+        // 从池子中取出本轮抽中的模型
+        modelType = s_fallbackPool[currentIndex];
+        
+        // 打印调试信息，你可以从控制台看到不同客户被分发到了不同的厂子！
+        std::cout << "[模型调度器] 轮询触发! index: " << currentIndex << " 分配给 -> " << modelType << std::endl;
     }
 
     // Normalize model name alias

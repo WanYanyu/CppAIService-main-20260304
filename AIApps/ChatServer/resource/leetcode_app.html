@@ -5,6 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leetcode 刷题助手</title>
+
+    <!-- CodeMirror 核心与主题 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/monokai.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/anyword-hint.min.js"></script>
+
     <style>
         /* 全局样式 - 统一设计风格 */
         :root {
@@ -336,17 +349,48 @@
             gap: 16px;
         }
 
-        .code-area {
+        .code-area,
+        .CodeMirror {
             flex: 1;
-            background: #1e1e1e;
-            color: #d4d4d4;
+            background: #272822 !important;
+            /* matching monokai */
             border: 1px solid #333;
             border-radius: 16px;
-            padding: 16px;
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 14px;
-            resize: none;
-            outline: none;
+            text-align: left;
+            overflow: hidden;
+            height: 100% !important;
+            /* Let it fill the editor-bg correctly via flex */
+        }
+
+        .CodeMirror-scroll {
+            padding: 16px;
+        }
+
+        /* 自定义代码补全弹窗样式 (暗色主题适配) */
+        .CodeMirror-hints {
+            background: #272822;
+            /* Monokai 背景 */
+            color: #f8f8f2;
+            border: 1px solid #555;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            padding: 4px 0;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+
+        .CodeMirror-hint {
+            padding: 4px 12px;
+            color: #f8f8f2;
+        }
+
+        .CodeMirror-hint-active {
+            background: #49483e;
+            /* Monokai 选中高亮 */
+            color: #f8f8f2;
         }
 
         .editor-bg {
@@ -867,8 +911,33 @@ public:
             window.location.href = '/entry';
         }
 
+        // CodeMirror Instance
+        let codeEditor;
+
         // Init
         document.addEventListener('DOMContentLoaded', () => {
+            codeEditor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+                lineNumbers: true,
+                mode: "text/x-c++src",
+                theme: "monokai",
+                indentUnit: 4,
+                matchBrackets: true,
+                autoCloseBrackets: true,
+                extraKeys: { "Ctrl-Space": "autocomplete" }
+            });
+
+            // 实时触发自动补全
+            codeEditor.on("inputRead", function (editor, change) {
+                if (change.origin !== "setValue" && change.text[0].match(/[a-zA-Z]/)) {
+                    if (!editor.state.completionActive) {
+                        editor.showHint({ hint: CodeMirror.hint.anyword, completeSingle: false });
+                    }
+                }
+            });
+
+            // Let the editor refresh if it starts out hidden
+            setTimeout(() => codeEditor.refresh(), 100);
+
             loadDashboard();
             loadAllRecords();
         });
@@ -880,7 +949,10 @@ public:
 
             document.getElementById(`${viewName}-view`).classList.add('active');
             if (viewName === 'dashboard') document.querySelectorAll('.nav-item')[0].classList.add('active');
-            if (viewName === 'practice') document.querySelectorAll('.nav-item')[1].classList.add('active');
+            if (viewName === 'practice') {
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+                if (codeEditor) setTimeout(() => codeEditor.refresh(), 10);
+            }
 
             if (viewName === 'dashboard') {
                 loadDashboard();
@@ -1047,6 +1119,7 @@ public:
         function startPractice(id, title, diff) {
             document.getElementById('dashboard-view').classList.remove('active');
             document.getElementById('practice-view').classList.add('active');
+            if (codeEditor) setTimeout(() => codeEditor.refresh(), 10);
 
             document.getElementById('practice-problem-title').innerText = `#${id} ${title}`;
             document.getElementById('practice-difficulty').className = `difficulty-badge difficulty-${diff.toLowerCase()}`;
@@ -1180,7 +1253,7 @@ public:
             const text = tutorInput.value.trim();
             if (!text || !currentProblem) return;
 
-            const code = document.getElementById('code-editor').value;
+            const code = codeEditor ? codeEditor.getValue() : document.getElementById('code-editor').value;
             let desc = "";
             const descEl = document.getElementById('problem-description');
             if (descEl) desc = descEl.innerText;
@@ -1263,7 +1336,7 @@ public:
         // ================= Submit Code (Sandbox) =================
         function submitCode() {
             if (!currentProblem) return alert("请先选择题目");
-            const code = document.getElementById('code-editor').value;
+            const code = codeEditor ? codeEditor.getValue() : document.getElementById('code-editor').value;
             if (code.trim().length < 20) return alert("代码太短了");
 
             if (tutorPanel.classList.contains('hidden')) openTutor();

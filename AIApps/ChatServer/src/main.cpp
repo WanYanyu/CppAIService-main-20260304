@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
     }
     muduo::Logger::setLogLevel(muduo::Logger::INFO);
     ChatServer server(port, serverName);
-    server.setThreadNum(4);
+    server.setThreadNum(32);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 

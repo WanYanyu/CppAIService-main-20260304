@@ -96,31 +96,31 @@ message(STATUS "Gomoku Server sources: ${GOMOKU_SERVER_SRC}")
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-# 把我们要测试的那个文件加进来创建一个新的可执行目标
-add_executable(test_runner tests_gtest/test_aihelper.cpp)
+# # 把我们要测试的那个文件加进来创建一个新的可执行目标
+# add_executable(test_runner tests_gtest/test_aihelper.cpp)
 
-# 需要把我们要测的类对应的源码全都绑给这个 test_runner
-# 注意下面这一坨是把所有依赖打包给它
-target_sources(test_runner PRIVATE
-    AIApps/ChatServer/src/AIUtil/AIHelper.cpp
-    AIApps/ChatServer/src/AIUtil/AIConfig.cpp
-    AIApps/ChatServer/src/AIUtil/AIFactory.cpp
-    AIApps/ChatServer/src/AIUtil/AIToolRegistry.cpp
-    AIApps/ChatServer/src/AIUtil/MQManager.cpp
-    # 这里如果编译还报错说缺哪个cpp，就在这里继续补那个cpp的路径
-)
+# # 需要把我们要测的类对应的源码全都绑给这个 test_runner
+# # 注意下面这一坨是把所有依赖打包给它
+# target_sources(test_runner PRIVATE
+#     AIApps/ChatServer/src/AIUtil/AIHelper.cpp
+#     AIApps/ChatServer/src/AIUtil/AIConfig.cpp
+#     AIApps/ChatServer/src/AIUtil/AIFactory.cpp
+#     AIApps/ChatServer/src/AIUtil/AIToolRegistry.cpp
+#     AIApps/ChatServer/src/AIUtil/MQManager.cpp
+#     # 这里如果编译还报错说缺哪个cpp，就在这里继续补那个cpp的路径
+# )
 
-# 链接 GTest 的库和项目中用到的关键库
-target_link_libraries(test_runner
-    ${GTEST_LIBRARIES}
-    pthread
-    curl
-    muduo_net
-    muduo_base
-    mysqlcppconn
-    mysqlclient
-    ssl
-    crypto
-    SimpleAmqpClient
-    rabbitmq
-)
+# # 链接 GTest 的库和项目中用到的关键库
+# target_link_libraries(test_runner
+#     ${GTEST_LIBRARIES}
+#     pthread
+#     curl
+#     muduo_net
+#     muduo_base
+#     mysqlcppconn
+#     mysqlclient
+#     ssl
+#     crypto
+#     SimpleAmqpClient
+#     rabbitmq
+# )

@@ -1,4 +1,5 @@
 import os
+import asyncio
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from models import EvaluationRequest, EvaluationResult, TestCase
@@ -60,21 +61,21 @@ async def evaluate_code(request: EvaluationRequest) -> EvaluationResult:
 
     # 2. AI Diagnosis Phase
     ai_feedback = None
+    has_expected_output = any((tc.expected_output or "").strip() for tc in request.test_cases)
+
+    # 没有任何 expected_output 时，不得输出“代码正确”的结论
+    if run_status == "Passed" and not has_expected_output:
+        run_status = "Unverified"
+        ai_feedback = (
+            "当前没有可用于判题的 expected_output，系统只能确认“可编译且可运行”，"
+            "不能确认“题目答案正确”。请先补充有效测试样例后再判断是否通过。"
+        )
+
     # We trigger AI diagnosis if there's a definite failure, OR if we "passed" but no expected output was provided
     # (so we don't actually know if it's correct without AI judging the raw output).
     needs_ai_judgment = False
-    if run_status != "Passed":
+    if run_status != "Passed" and run_status != "Unverified":
         needs_ai_judgment = True
-    elif all(not tc.expected_output for tc in request.test_cases):
-        # All test cases had empty expected outputs, so the "Passed" status from execution is fake.
-        # We must ask the AI to evaluate the code and stdout.
-        needs_ai_judgment = True
-        run_status = "Unverified" # Change status so frontend doesn't show a bold green "Passed"
-        failed_execution_status = (
-            "【极端重要说明】代码成功编译并且完美执行结束，没有发生任何崩溃！仅仅是因为用户没有设置预期输出答案，所以系统标记为待验证。\n"
-            "你的任务是：如果代码逻辑大体正确，请**极其强烈地表扬**用户，直接告诉用户代码非常好，完全没问题！\n"
-            "**绝对禁止**去鸡蛋里挑骨头，**绝对禁止**去捏造不存在的语法错误或逻辑漏洞（比如认为 `a ? b : c` 和 `if else` 其中之一是错的）。"
-        )
 
     if needs_ai_judgment:
         diagnosis_prompt = SANDBOX_DIAGNOSIS_PROMPT.format(
@@ -84,16 +85,25 @@ async def evaluate_code(request: EvaluationRequest) -> EvaluationResult:
             stderr=total_stderr
         )
 
-        response = await client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=[{"role": "user", "content": diagnosis_prompt}],
-            temperature=0.3, # 稍微带点温度以生成人类友好的话术
-        )
-        ai_feedback = response.choices[0].message.content
+        try:
+            response = await asyncio.wait_for(
+                client.chat.completions.create(
+                    model=MODEL_NAME,
+                    messages=[{"role": "user", "content": diagnosis_prompt}],
+                    temperature=0.3, # 稍微带点温度以生成人类友好的话术
+                ),
+                timeout=10,
+            )
+            ai_feedback = response.choices[0].message.content
+        except Exception as e:
+            ai_feedback = (
+                "AI 诊断暂时不可用（已超时或调用失败），但沙盒执行结果已返回。"
+                f" 失败原因: {str(e)}"
+            )
 
         # If the AI explicitly says it's correct in its own way, we could theoretically parse it,
         # but for now we'll just return the feedback under the "Unverified" or "Wrong Answer" status.
-    else:
+    elif ai_feedback is None:
         ai_feedback = "恭喜你！代码成功通过了所有的沙盒测试用例，逻辑非常完美！"
 
     return EvaluationResult(
